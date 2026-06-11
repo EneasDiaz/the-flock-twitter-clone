@@ -19,47 +19,50 @@
 
         {% for tweet in page_obj %}
         <article>
-            <p>
+            <div class="tweet-meta">
             <strong>{{ tweet.author.display_name }}</strong>
-            <span>@{{ tweet.author.username }}</span>
-            </p>
+            <a href="{% url 'accounts:profile_detail' tweet.author.username %}">
+                @{{ tweet.author.username }}
+            </a>
+            <small>{{ tweet.created_at }}</small>
+            </div>
 
             <p>{{ tweet.content }}</p>
 
-            <small>{{ tweet.created_at }}</small>
+            <p class="muted">{{ tweet.likes_count }} likes</p>
 
-            <p>{{ tweet.likes_count }} likes</p>
-
+            <div class="inline-actions">
             {% if tweet.id in liked_tweet_ids %}
-            <form method="post" action="{% url 'likes:unlike' tweet.id %}">
+                <form method="post" action="{% url 'likes:unlike' tweet.id %}">
                 {% csrf_token %}
                 <button type="submit">Unlike</button>
-            </form>
+                </form>
             {% else %}
-            <form method="post" action="{% url 'likes:like' tweet.id %}">
+                <form method="post" action="{% url 'likes:like' tweet.id %}">
                 {% csrf_token %}
                 <button type="submit">Like</button>
-            </form>
+                </form>
             {% endif %}
 
             {% if tweet.author == user %}
-            <form method="post" action="{% url 'tweets:delete' tweet.id %}">
+                <form method="post" action="{% url 'tweets:delete' tweet.id %}">
                 {% csrf_token %}
-                <button type="submit">Delete</button>
-            </form>
+                <button class="danger" type="submit">Delete</button>
+                </form>
             {% endif %}
+            </div>
         </article>
-
-        <hr>
         {% empty %}
         <p>No tweets yet. Write the first one.</p>
         {% endfor %}
     </section>
 
     {% if page_obj.has_other_pages %}
-        <nav>
+        <nav class="pagination" aria-label="Timeline pagination">
         {% if page_obj.has_previous %}
             <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% else %}
+            <span></span>
         {% endif %}
 
         <span>
@@ -68,6 +71,8 @@
 
         {% if page_obj.has_next %}
             <a href="?page={{ page_obj.next_page_number }}">Next</a>
+        {% else %}
+            <span></span>
         {% endif %}
         </nav>
     {% endif %}
