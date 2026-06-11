@@ -16,3 +16,14 @@ class TweetForm(forms.ModelForm):
                 }
             )
         }
+
+    def clean_content(self):
+        content = self.cleaned_data["content"].strip()
+
+        if not content:
+            raise forms.ValidationError("Tweet content cannot be empty.")
+
+        if len(content) > 280:
+            raise forms.ValidationError("Tweet content cannot exceed 280 characters.")
+
+        return content

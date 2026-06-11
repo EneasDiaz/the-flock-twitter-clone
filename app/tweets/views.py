@@ -37,7 +37,7 @@ def create_tweet_view(request):
         tweet.save()
         messages.success(request, "Tweet created.")
     else:
-        messages.error(request, "Tweet must be between 1 and 280 characters.")
+        messages.error(request, "Tweet must have text and be no longer than 280 characters.")
 
     return redirect("tweets:timeline")
 

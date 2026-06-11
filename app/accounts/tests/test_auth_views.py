@@ -80,7 +80,7 @@ def test_user_can_login_with_email_and_password(client):
     )
 
     assert response.status_code == 302
-    assert response.url == reverse("accounts:profile")
+    assert response.url == reverse("tweets:timeline")
     assert str(user.id) == client.session["_auth_user_id"]
 
 
