@@ -13,7 +13,7 @@ from .models import Tweet
 @login_required
 def timeline_view(request):
     following_ids = Follow.objects.filter(follower=request.user,).values_list("following_id", flat=True)
-    tweets = (Tweet.objects.filter(Q(author=request.user) | Q(author_id__in=following_ids)).select_related("author").annotate(likes_count=Count("likes")))
+    tweets = (Tweet.objects.filter(Q(author=request.user) | Q(author_id__in=following_ids)).select_related("author").annotate(likes_count=Count("likes")).order_by("-created_at"))
 
     liked_tweet_ids = set(request.user.likes.values_list("tweet_id", flat=True))
 
