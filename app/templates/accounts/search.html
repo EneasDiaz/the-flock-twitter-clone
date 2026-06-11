@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Search users | Twitter Clone{% endblock %}
+
+{% block content %}
+    <section>
+        <h1>Search users</h1>
+
+        <form method="get" action="{% url 'accounts:search' %}">
+        <label for="search-query">Search by name or username</label>
+        <input
+            id="search-query"
+            type="search"
+            name="q"
+            value="{{ query }}"
+            placeholder="Search users"
+        >
+        <button type="submit">Search</button>
+        </form>
+    </section>
+
+    <section>
+        {% if query %}
+        <h2>Results for "{{ query }}"</h2>
+
+        {% for result_user in users %}
+            <article>
+            <p>
+                <strong>{{ result_user.display_name }}</strong>
+                <a href="{% url 'accounts:profile_detail' result_user.username %}">
+                @{{ result_user.username }}
+                </a>
+            </p>
+
+            {% if result_user.bio %}
+                <p>{{ result_user.bio }}</p>
+            {% endif %}
+            </article>
+            <hr>
+        {% empty %}
+            <p>No users found.</p>
+        {% endfor %}
+        {% else %}
+        <p>Search for people by display name or username.</p>
+        {% endif %}
+    </section>
+{% endblock %}

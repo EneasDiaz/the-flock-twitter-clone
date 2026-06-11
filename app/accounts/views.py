@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 from follows.services import is_following
 from follows.models import Follow
 
@@ -94,5 +95,28 @@ def following_list_view(request, username):
             "profile_user": profile_user,
             "users": following,
             "list_title": "Following",
+        },
+    )
+
+@login_required
+def user_search_view(request):
+    query = request.GET.get("q", "").strip()
+    users = User.objects.none()
+
+    if query:
+        users = (
+            User.objects.filter(
+                Q(username__icontains=query) | Q(display_name__icontains=query)
+            )
+            .exclude(id=request.user.id)
+            .order_by("username")
+        )
+
+    return render(
+        request,
+        "accounts/search.html",
+        {
+            "query": query,
+            "users": users,
         },
     )
