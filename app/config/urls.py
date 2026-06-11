@@ -5,7 +5,7 @@ from django.urls import include, path
 
 def home_view(request):
     if request.user.is_authenticated:
-        return redirect("accounts:profile")
+        return redirect("tweets:timeline")
 
     return redirect("accounts:login")
 
@@ -13,5 +13,6 @@ def home_view(request):
 urlpatterns = [
     path("", home_view, name="home"),
     path("accounts/", include("accounts.urls")),
+    path("tweets/", include("tweets.urls")),
     path("admin/", admin.site.urls),
 ]

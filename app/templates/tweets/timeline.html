@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Timeline | Twitter Clone{% endblock %}
+
+{% block content %}
+    <section>
+        <h1>Timeline</h1>
+
+        <form method="post" action="{% url 'tweets:create' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">Tweet</button>
+        </form>
+    </section>
+
+    <section>
+        <h2>Latest tweets</h2>
+
+        {% for tweet in page_obj %}
+        <article>
+            <p>
+            <strong>{{ tweet.author.display_name }}</strong>
+            <span>@{{ tweet.author.username }}</span>
+            </p>
+
+            <p>{{ tweet.content }}</p>
+
+            <small>{{ tweet.created_at }}</small>
+
+            {% if tweet.author == user %}
+            <form method="post" action="{% url 'tweets:delete' tweet.id %}">
+                {% csrf_token %}
+                <button type="submit">Delete</button>
+            </form>
+            {% endif %}
+        </article>
+
+        <hr>
+        {% empty %}
+        <p>No tweets yet. Write the first one.</p>
+        {% endfor %}
+    </section>
+
+    {% if page_obj.has_other_pages %}
+        <nav>
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        <span>
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Next</a>
+        {% endif %}
+        </nav>
+    {% endif %}
+{% endblock %}
