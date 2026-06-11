@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}@{{ profile_user.username }} | Twitter Clone{% endblock %}
+
+{% block content %}
+    <section>
+        <h1>{{ profile_user.display_name }}</h1>
+
+        <p><strong>@{{ profile_user.username }}</strong></p>
+
+        {% if profile_user.bio %}
+        <p>{{ profile_user.bio }}</p>
+        {% else %}
+        <p>No bio yet.</p>
+        {% endif %}
+
+        <p>
+        <a href="{% url 'accounts:followers_list' profile_user.username %}">
+            {{ followers_count }} followers
+        </a>
+        ·
+        <a href="{% url 'accounts:following_list' profile_user.username %}">
+            {{ following_count }} following
+        </a>
+        </p>
+
+        {% if profile_user != user %}
+        {% if is_following_profile %}
+            <form method="post" action="{% url 'follows:unfollow' profile_user.username %}">
+            {% csrf_token %}
+            <button type="submit">Unfollow</button>
+            </form>
+        {% else %}
+            <form method="post" action="{% url 'follows:follow' profile_user.username %}">
+            {% csrf_token %}
+            <button type="submit">Follow</button>
+            </form>
+        {% endif %}
+        {% endif %}
+    </section>
+{% endblock %}

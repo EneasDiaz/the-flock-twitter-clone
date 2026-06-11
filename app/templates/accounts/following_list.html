@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}{{ list_title }} | Twitter Clone{% endblock %}
+
+{% block content %}
+    <h1>{{ list_title }} of @{{ profile_user.username }}</h1>
+
+    {% for listed_user in users %}
+        <article>
+        <p>
+            <strong>{{ listed_user.display_name }}</strong>
+            <a href="{% url 'accounts:profile_detail' listed_user.username %}">
+            @{{ listed_user.username }}
+            </a>
+        </p>
+
+        {% if listed_user.bio %}
+            <p>{{ listed_user.bio }}</p>
+        {% endif %}
+        </article>
+        <hr>
+    {% empty %}
+        <p>No users to show yet.</p>
+    {% endfor %}
+{% endblock %}

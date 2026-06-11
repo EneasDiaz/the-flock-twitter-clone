@@ -36,6 +36,7 @@ ALLOWED_HOSTS = [
 INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "tweets",
+    "follows",
     "django_htmx",
     "django.contrib.admin",
     "django.contrib.auth",

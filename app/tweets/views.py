@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
+from django.db.models import Q
+from follows.models import Follow
 
 from .forms import TweetForm
 from .models import Tweet
@@ -10,7 +12,8 @@ from .models import Tweet
 
 @login_required
 def timeline_view(request):
-    tweets = Tweet.objects.filter(author=request.user).select_related("author")
+    following_ids = Follow.objects.filter(follower=request.user,).values_list("following_id", flat=True)
+    tweets = Tweet.objects.filter(Q(author=request.user) | Q(author_id__in=following_ids)).select_related("author")
 
     paginator = Paginator(tweets, 10)
     page_number = request.GET.get("page")
