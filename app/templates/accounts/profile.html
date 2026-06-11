@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Profile | Twitter Clone{% endblock %}
+
+{% block content %}
+    <h1>{{ user.display_name }}</h1>
+
+    <p><strong>@{{ user.username }}</strong></p>
+    <p>{{ user.email }}</p>
+
+    {% if user.bio %}
+        <p>{{ user.bio }}</p>
+    {% else %}
+        <p>No bio yet.</p>
+    {% endif %}
+{% endblock %}
