@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "tweets",
     "follows",
+    "likes",
     "django_htmx",
     "django.contrib.admin",
     "django.contrib.auth",

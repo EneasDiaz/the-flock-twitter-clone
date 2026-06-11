@@ -28,6 +28,20 @@
 
             <small>{{ tweet.created_at }}</small>
 
+            <p>{{ tweet.likes_count }} likes</p>
+
+            {% if tweet.id in liked_tweet_ids %}
+            <form method="post" action="{% url 'likes:unlike' tweet.id %}">
+                {% csrf_token %}
+                <button type="submit">Unlike</button>
+            </form>
+            {% else %}
+            <form method="post" action="{% url 'likes:like' tweet.id %}">
+                {% csrf_token %}
+                <button type="submit">Like</button>
+            </form>
+            {% endif %}
+
             {% if tweet.author == user %}
             <form method="post" action="{% url 'tweets:delete' tweet.id %}">
                 {% csrf_token %}
