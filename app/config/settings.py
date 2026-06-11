@@ -34,7 +34,8 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-    "accounts",
+    "accounts.apps.AccountsConfig",
+    "tweets",
     "django_htmx",
     "django.contrib.admin",
     "django.contrib.auth",
