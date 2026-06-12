@@ -8,3 +8,5 @@ pytest-django>=4.9,<5.0
 coverage>=7.6,<8.0
 factory-boy>=3.3,<4.0
 Faker>=33.0,<34.0
+
+playwright>=1.49,<2.0

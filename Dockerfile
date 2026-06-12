@@ -13,6 +13,8 @@ COPY requirements.txt /app/
 RUN pip install --upgrade pip \
     && pip install -r requirements.txt
 
+RUN python -m playwright install --with-deps chromium
+
 COPY . /app/
 
 EXPOSE 8000
